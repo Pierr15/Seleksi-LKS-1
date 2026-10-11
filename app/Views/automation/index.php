@@ -5,7 +5,7 @@
 <div class="page-head">
     <div>
         <h2>Otomatisasi</h2>
-        <p><?= count($rules) ?> aturan · eksekusi berjalan bersama scheduler tiap 30 detik</p>
+        <p><?= count($rules) ?> aturan · eksekusi ditangguhkan sementara untuk demo LKS</p>
     </div>
     <?php if ($isAdmin): ?>
         <div class="actions">

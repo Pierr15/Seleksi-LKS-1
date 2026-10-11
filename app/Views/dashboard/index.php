@@ -12,7 +12,7 @@ $energi = $summary['energi'];
 <div class="page-head">
     <div>
         <h2>Ringkasan Gedung</h2>
-        <p>Data nyata dari basis data · scheduler berjalan setiap 30 detik</p>
+        <p>Data nyata dari basis data · scheduler ditangguhkan sementara</p>
     </div>
     <div class="actions">
         <a class="btn btn-outline btn-sm" href="<?= site_url('dashboard') ?>">
@@ -24,17 +24,13 @@ $energi = $summary['energi'];
     </div>
 </div>
 
-<?php if ($s['fresh']): ?>
-    <div class="alert alert-success"><?= orbit_icon('check') ?>
-        <span>Scheduler aktif · terakhir berjalan <strong><?= esc(orbit_format_datetime($s['last_run'])) ?></strong></span>
-    </div>
-<?php else: ?>
-    <div class="alert alert-warn"><?= orbit_icon('alert') ?>
-        <span>Scheduler belum berjalan baru-baru ini
-            (status: <?= esc($s['status']) ?><?= $s['last_run'] !== null ? ', terakhir ' . esc(orbit_format_datetime($s['last_run'])) : '' ?>).
-            Pastikan kontainer <span class="mono">orbit-scheduler</span> berjalan.</span>
-    </div>
-<?php endif; ?>
+<div class="alert alert-info">
+    <?= orbit_icon('info') ?>
+    <span>
+        Scheduler ditangguhkan sementara untuk demo LKS.
+        Otomatisasi terjadwal tidak berjalan pada lingkungan demo ini.
+    </span>
+</div>
 
 <div class="stats-grid">
     <div class="stat accent-primary">

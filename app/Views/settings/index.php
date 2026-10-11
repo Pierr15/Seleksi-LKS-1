@@ -43,16 +43,13 @@
     <div class="card">
         <div class="card-header"><?= orbit_icon('activity', 18) ?> Status Scheduler</div>
         <div class="card-body">
-            <?php if ($scheduler['fresh']): ?>
-                <div class="alert alert-success mb-3"><?= orbit_icon('check') ?>
-                    <span>Scheduler aktif — terakhir berjalan <strong><?= esc(orbit_format_datetime($scheduler['last_run'])) ?></strong>.</span>
-                </div>
-            <?php else: ?>
-                <div class="alert alert-warn mb-3"><?= orbit_icon('alert') ?>
-                    <span>Scheduler belum berjalan baru-baru ini (status: <?= esc($scheduler['status']) ?>).
-                        Pastikan kontainer <span class="mono">orbit-scheduler</span> berjalan.</span>
-                </div>
-            <?php endif; ?>
+            <div class="alert alert-info mb-3">
+                <?= orbit_icon('info') ?>
+                <span>
+                    Scheduler ditangguhkan sementara untuk demo LKS.
+                    Proses otomatis tidak dijalankan pada lingkungan hosting ini.
+                </span>
+            </div>
 
             <div class="kv">
                 <span>Status</span>

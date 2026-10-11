@@ -1,0 +1,9 @@
+.git
+.env
+vendor
+writable/logs/*
+writable/cache/*
+writable/session/*
+build
+composer.phar
+_node_modules

@@ -1,0 +1,66 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: orbit-app
+    ports:
+      - "8080:80"
+    environment:
+      TZ: Asia/Jakarta
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: orbit-scheduler
+    environment:
+      TZ: Asia/Jakarta
+    command: >
+      sh -c 'while true;
+        do php spark orbit:scheduler:tick || echo "[scheduler] tick gagal, lanjut berikutnya";
+        sleep 30;
+      done'
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      db:
+        condition: service_healthy
+      app:
+        condition: service_started
+    restart: unless-stopped
+
+  db:
+    image: mysql:8.4
+    container_name: orbit-db
+    environment:
+      TZ: Asia/Jakarta
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-orbit_root_pw}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-orbit_building}
+      MYSQL_USER: ${MYSQL_USER:-orbit}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-orbit_pw}
+      MYSQL_CHARSET: utf8mb4
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./docker/mysql/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+    restart: unless-stopped
+    # Sengaja TIDAK membuka port ke jaringan lokal host:
+    # database hanya diakses dari dalam jaringan Docker Compose.
+
+volumes:
+  db_data:
